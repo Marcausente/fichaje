@@ -10,13 +10,12 @@ public class fichaje {
         boolean fichcomp = false;
         int menu1 = 0;
         int segtotales = 0;
-        int recuento = 0;
         int contadorfichaje = 0;
         int horastotales = 0;
 
         do {
             menuprint(green, resetColorCode);
-            menu1 = menuswitch(menu1, red, resetColorCode, horastotales, fichcomp);
+            menu1 = menuswitch(menu1, red, resetColorCode, horastotales, fichcomp, segtotales);
             if(menu1 == 1){
                 fichcomp = esfichado(fichcomp);
                 if (fichcomp == true){
@@ -25,15 +24,7 @@ public class fichaje {
                     segtotales = finfichaje(segtotales);
                 }
             }
-            recuento = resetotales(segtotales, recuento);
         } while (menu1 != 3);
-    }
-
-    private static int resetotales(int segtotales, int recuento) {
-
-        recuento = segtotales+recuento;
-        segtotales = 0;
-        return recuento;
     }
 
     private static int finfichaje(int segtotales) {
@@ -44,6 +35,7 @@ public class fichaje {
         System.out.println("Fichaje finalizado a las: " + hoursfin + ":" + minutesfin + ":" + secondsfin);
         segtotales = calcminutosfichados(segtotales, hoursfin, minutesfin, secondsfin);
         convertirsegundosfin(segtotales);
+        locaDate = null;
         return segtotales;
     }
 
@@ -80,13 +72,14 @@ public class fichaje {
         System.out.println("2. Ver horas totales fichadas");
         System.out.println("3. Salir");
     }
-    private static int menuswitch(int menu1, String red, String resetColorCode, int horastotales, boolean fichcomp) {
+    private static int menuswitch(int menu1, String red, String resetColorCode, int horastotales, boolean fichcomp, int segtotales) {
         menu1 = input.nextInt();
         switch (menu1){
             case 1:
                 System.out.println("Has elegido: Fichar / Desfichar");
                 break;
             case 2:
+                mostrartotal(segtotales);
                 break;
             case 3:
                 System.out.println("Saliendo...");
@@ -95,16 +88,26 @@ public class fichaje {
                 System.out.println(red+"ERROR"+resetColorCode);
                 break;
         }
-    return (menu1);
+        return (menu1);
     }
+
+    private static void mostrartotal(int segtotales) {
+        segtotales = segtotales + segtotales;
+        int horasmostrar = segtotales / 3600;
+        int minutosmostrar = (segtotales % 3600) / 60;
+        int segundosmostrar = segtotales % 60;
+
+        System.out.println("Has estado fichado una totalidad de: "+horasmostrar+"h "+minutosmostrar+"m "+segundosmostrar+"s");
+    }
+
     private static int iniciofichaje (int segtotales) {
         LocalDateTime locaDate = LocalDateTime.now();
-            int hoursinicio = locaDate.getHour();
-            int minutesinico = locaDate.getMinute();
-            int secondsinicio = locaDate.getSecond();
-            System.out.println("Fichaje iniciado a las: " + hoursinicio + ":" + minutesinico + ":" + secondsinicio);
-            segtotales = segtotal(hoursinicio, minutesinico, secondsinicio, segtotales);
-            return segtotales;
+        int hoursinicio = locaDate.getHour();
+        int minutesinico = locaDate.getMinute();
+        int secondsinicio = locaDate.getSecond();
+        System.out.println("Fichaje iniciado a las: " + hoursinicio + ":" + minutesinico + ":" + secondsinicio);
+        segtotales = segtotal(hoursinicio, minutesinico, secondsinicio, segtotales);
+        return segtotales;
     }
     private static int segtotal(int hoursinicio, int minutesinico, int secondsinicio, int segtotales) {
         segtotales = hoursinicio * 3600 + minutesinico * 60 + secondsinicio;
